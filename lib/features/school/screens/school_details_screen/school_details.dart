@@ -76,32 +76,32 @@ class _SchoolDetailsContent extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        state.school.id,
+                        state.school.id!,
                         style: TextStyles.heading03,
                       ),
                       const SizedBox(
                         height: DisplayProperties.defaultPaddingValue * 2,
                       ),
                       Text(
-                        state.school.name,
+                        state.school.name!,
                         style: TextStyles.heading03,
                       ),
                       const SizedBox(
                         height: DisplayProperties.defaultPaddingValue * 2,
                       ),
-                      ...courses.map(
+                      ...courses!.map(
                         (course) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: ListTile(
-                            tileColor: course.courseColor.color,
+                            tileColor: course.courseColor!.color,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            title: Text(course.id.toUpperCase(),
+                            title: Text(course.id!.toUpperCase(),
                                 style: TextStyles.body01
                                     .copyWith(color: AppColors.white100)),
                             subtitle: Text(
-                                '${course.dayOfWeek.name.toUpperCase()} - ${course.timeOfDay.prettyTime}',
+                                '${course.dayOfWeek!.name.toUpperCase()} - ${course.timeOfDay.prettyTime}',
                                 style: TextStyles.body02
                                     .copyWith(color: AppColors.white100)),
                           ),

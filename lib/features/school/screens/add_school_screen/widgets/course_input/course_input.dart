@@ -207,18 +207,19 @@ class _CoachesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AddCourseCubit, AddCourseState>(
       builder: (context, state) {
-        if (state is AddCourseInitial) {
-          return ListView.builder(
-            itemBuilder: (context, index) {
-              final coach = state.coaches[index];
-              return ListTile(
-                title: Text('${coach.firstName} ${coach.lastName}'),
-                onTap: () {
-                  // context.read<AddCourseCubit>().selectCoach(coach);
-                },
-              );
-            },
+        if (state is AddCourseInitial && state.coaches.isNotEmpty) {
+          print(' ---- coaches: ${state.coaches}');
+          return ListView(
             shrinkWrap: true,
+            children: [
+              for (var coach in state.coaches)
+                ListTile(
+                  title: Text('${coach.firstName} ${coach.lastName}'),
+                  trailing: Checkbox(value: value, onChanged: () {
+                    
+                  }),
+                ),
+            ],
           );
         }
         return const SizedBox.shrink();

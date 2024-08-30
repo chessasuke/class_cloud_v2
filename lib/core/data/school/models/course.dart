@@ -51,18 +51,25 @@ class Course extends Equatable {
     required this.dayOfWeek,
     required this.timeOfDay,
     required this.courseColor,
-    required this.coaches,
+    this.coaches = const [],
   });
 
-  final String id;
-  final DayOfWeek dayOfWeek;
+  final String? id;
+  final DayOfWeek? dayOfWeek;
   @TimeOfDayConverter()
-  final TimeOfDay timeOfDay;
-  final CourseColor courseColor;
+  final TimeOfDay? timeOfDay;
+  final CourseColor? courseColor;
   final List<Coach> coaches;
 
+  bool get isComplete {
+    return id != null &&
+        dayOfWeek != null &&
+        timeOfDay != null &&
+        courseColor != null;
+  }
+
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         dayOfWeek,
         timeOfDay,
@@ -70,10 +77,10 @@ class Course extends Equatable {
         coaches,
       ];
 
-  Map<String, Object> get toTableData {
+  Map<String, Object?> get toTableData {
     return {
       'Id': id,
-      'Day': dayOfWeek.name,
+      'Day': dayOfWeek?.name,
       'Time': timeOfDay,
       'Color': courseColor,
     };

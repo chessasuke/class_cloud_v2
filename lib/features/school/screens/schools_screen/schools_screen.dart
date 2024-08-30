@@ -82,7 +82,7 @@ class _Content extends StatelessWidget {
                       if (state.filter.isNotEmpty)
                         for (final school in state.schools
                             .where(
-                              (school) => (school.name
+                              (school) => (school.name!
                                   .toLowerCase()
                                   .startsWith(state.filter.toLowerCase())),
                             )

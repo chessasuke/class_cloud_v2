@@ -17,7 +17,7 @@ class SchoolTile extends StatelessWidget {
       onTap: () {
         context.pushNamed(
           GoRouterNames.schoolDetails,
-          pathParameters: {'schoolId': school.id},
+          pathParameters: {'schoolId': school.id!},
         );
       },
       child: Column(
@@ -32,7 +32,7 @@ class SchoolTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _SchoolTileName(name: school.name),
+                  _SchoolTileName(name: school.name!),
                   const SizedBox(height: DesignUnits.x2),
                 ],
               ),

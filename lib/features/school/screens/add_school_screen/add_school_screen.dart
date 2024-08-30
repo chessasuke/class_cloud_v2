@@ -156,22 +156,22 @@ class _Courses extends StatelessWidget {
                 color: Colors.red,
                 child: const Icon(Icons.delete, color: Colors.white),
               ),
-              key: Key(course.id),
+              key: Key(course.id!),
               onDismissed: (direction) {
-                context.read<AddSchoolCubit>().deleteCourse(course.id);
+                context.read<AddSchoolCubit>().deleteCourse(course.id!);
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: ListTile(
-                  tileColor: course.courseColor.color,
+                  tileColor: course.courseColor!.color,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  title: Text(course.id.toUpperCase(),
+                  title: Text(course.id!.toUpperCase(),
                       style: TextStyles.body01
                           .copyWith(color: AppColors.white100)),
                   subtitle: Text(
-                      '${course.dayOfWeek.name.toUpperCase()} - ${course.timeOfDay.prettyTime}',
+                      '${course.dayOfWeek!.name.toUpperCase()} - ${course.timeOfDay.prettyTime}',
                       style: TextStyles.body02
                           .copyWith(color: AppColors.white100)),
                 ),

@@ -12,26 +12,28 @@ class School extends Equatable {
     required this.courses,
   });
 
-  final String id;
-  final String name;
-  final List<Course> courses;
+  final String? id;
+  final String? name;
+  final List<Course>? courses;
 
   bool get isValid {
-    return id.isNotEmpty && name.isNotEmpty && courses.isNotEmpty;
+    return (id?.isNotEmpty ?? false) &&
+        (name?.isNotEmpty ?? false) &&
+        (courses?.isNotEmpty ?? false);
   }
 
-  Map<String, Object> get toTableData {
+  Map<String, Object?> get toTableData {
     return {
       'Id': id,
       'Name': name,
-      'Courses': courses.map((e) => e.id).toList(),
+      'Courses': courses?.map((e) => e.id).toList(),
     };
   }
 
-  String get prettyCourses => courses.map((e) => e.id).join(', ');
+  String? get prettyCourses => courses?.map((e) => e.id).join(', ');
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         name,
         courses,
@@ -56,16 +58,17 @@ class SchoolWithoutCourses extends Equatable {
     required this.name,
   });
 
-  final String id;
-  final String name;
+  final String? id;
+  final String? name;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         name,
       ];
 
-  factory SchoolWithoutCourses.fromJson(Map<String, dynamic> json) => _$SchoolWithoutCoursesFromJson(json);
+  factory SchoolWithoutCourses.fromJson(Map<String, dynamic> json) =>
+      _$SchoolWithoutCoursesFromJson(json);
 
   Map<String, dynamic> toJson() => _$SchoolWithoutCoursesToJson(this);
 }

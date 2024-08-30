@@ -51,7 +51,10 @@ class AddSchoolDataSource {
         school.toSchoolWithoutCourses(),
       );
 
-      for (var course in school.courses) {
+      final courses = school.courses;
+      if(courses == null) return null;
+
+      for (var course in courses) {
         batch.set<Course>(
           coursesRef.doc(course.id),
           course,

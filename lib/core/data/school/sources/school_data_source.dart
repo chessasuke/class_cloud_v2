@@ -34,6 +34,8 @@ class SchoolesDataSource {
       if (schoolsWithoutCourses == null) return null;
 
       for (var school in schoolsWithoutCourses) {
+        if (school.id == null || school.name == null) continue;
+
         final coursePath =
             schoolsRef.doc(school.id).collection(SubCollections.courses).path;
 
@@ -45,13 +47,20 @@ class SchoolesDataSource {
 
         final courses =
             await _firestore.fetchDocuments(collectionRef: coursesRef);
-        if (courses != null) {
-          schools.add(School(
-            id: school.id,
-            name: school.name,
-            courses: courses,
-          ));
+        if (courses == null) continue;
+
+        for (var course in courses) {
+          if (course.id == null ||
+              course.courseColor == null ||
+              course.dayOfWeek == null ||
+              course.timeOfDay == null) continue;
         }
+
+        schools.add(School(
+          id: school.id,
+          name: school.name,
+          courses: courses,
+        ));
       }
       return schools;
     } catch (e) {

@@ -20,11 +20,13 @@ class SchoolDetailsDataSource {
     final schoolsRef =
         firestoreClient.constructTypedCollectionReference<SchoolWithoutCourses>(
       collectionPath: Collections.schools,
-      fromFirestore: (snapshot, _) => SchoolWithoutCourses.fromJson(snapshot.data()!),
+      fromFirestore: (snapshot, _) =>
+          SchoolWithoutCourses.fromJson(snapshot.data()!),
       toFirestore: (school, _) => school.toJson(),
     );
     try {
-      final schoolWithoutCourses = await firestoreClient.fetchDocumentById<SchoolWithoutCourses>(
+      final schoolWithoutCourses =
+          await firestoreClient.fetchDocumentById<SchoolWithoutCourses>(
         collectionRef: schoolsRef,
         documentId: schoolId,
       );
@@ -42,17 +44,31 @@ class SchoolDetailsDataSource {
       final courses = await firestoreClient.fetchDocuments<Course>(
         collectionRef: coursesRef,
       );
+      if (courses == null) return null;
+
+      print(' ----- courses: $courses');
 
       if (schoolWithoutCourses != null && !courses.isNullOrEmpty) {
         return School(
           id: schoolId,
           name: schoolWithoutCourses.name,
-          courses: courses!,
+          courses: [
+            for (var course in courses)
+              if (course.isComplete)
+                Course(
+                  id: course.id,
+                  courseColor: course.courseColor,
+                  dayOfWeek: course.dayOfWeek,
+                  timeOfDay: course.timeOfDay,
+                  coaches: course.coaches,
+                )
+          ],
         );
       } else {
         return null;
       }
-    } catch (e) {
+    } catch (e, st) {
+      print(' ----- fetchSchoolById error: ${e.toString()} | $st');
       Logger(LoggerConstants.firebaseFirestore)
           .log(Level.SHOUT, 'Error fetching School: $e');
     }
