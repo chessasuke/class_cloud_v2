@@ -200,7 +200,9 @@ List<RouteBase> getGoRouterRoutes(Ref ref) {
               ),
               BlocProvider(
                 create: (context) => AddCourseCubit(
-                    coachesRepository: ref.read(coachesRepository)),
+                  coachesRepository: ref.read(coachesRepository),
+                  studentsRepository: ref.read(studentsRepository),
+                ),
               ),
             ],
             child: const AddSchoolScreen(),

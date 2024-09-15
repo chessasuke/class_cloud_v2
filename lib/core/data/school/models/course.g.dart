@@ -17,6 +17,10 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
               ?.map((e) => Coach.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      students: (json['students'] as List<dynamic>?)
+              ?.map((e) => Student.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
@@ -26,6 +30,7 @@ Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
           instance.timeOfDay, const TimeOfDayConverter().toJson),
       'courseColor': _$CourseColorEnumMap[instance.courseColor],
       'coaches': instance.coaches.map((e) => e.toJson()).toList(),
+      'students': instance.students.map((e) => e.toJson()).toList(),
     };
 
 const _$DayOfWeekEnumMap = {

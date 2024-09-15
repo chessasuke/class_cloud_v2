@@ -134,7 +134,9 @@ class FirestoreClient with ReporterMixin {
     }
   }
 
-  /// Queries a collection by comparing its documents' [field] value with [value]. /// /// When [orderBy] is set, it will sort by the field based on the /// [descending] value. /// When limit is set, it will limit the number of items returned to [limit].
+  /// Queries a collection by comparing its documents' [field] value with [value].
+  /// When [orderBy] is set, it will sort by the field based on the [descending] value.
+  /// When limit is set, it will limit the number of items returned to [limit].
   Future<List<T>?> queryByValueComparison<T>({
     required CollectionReference<T> collection,
     required String field,

@@ -20,4 +20,9 @@ class StudentsRepositoryImpl implements StudentsRepository {
   Future<List<Student>?> fetchStudents() async {
     return await _studentDataSource.fetchStudents();
   }
+
+  @override
+  Future<List<Student>?> queryStudents(String school) async {
+    return await _studentDataSource.queryStudents(school);
+  }
 }

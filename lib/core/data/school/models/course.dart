@@ -1,4 +1,5 @@
 import 'package:class_cloud/core/data/coaches/models/coach.dart';
+import 'package:class_cloud/core/data/students/models/student.dart';
 import 'package:class_cloud/core/utils/json_converters.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,7 @@ class Course extends Equatable {
     required this.timeOfDay,
     required this.courseColor,
     this.coaches = const [],
+    this.students = const [],
   });
 
   final String? id;
@@ -60,6 +62,7 @@ class Course extends Equatable {
   final TimeOfDay? timeOfDay;
   final CourseColor? courseColor;
   final List<Coach> coaches;
+  final List<Student> students;
 
   bool get isComplete {
     return id != null &&
@@ -75,6 +78,7 @@ class Course extends Equatable {
         timeOfDay,
         courseColor,
         coaches,
+        students,
       ];
 
   Map<String, Object?> get toTableData {

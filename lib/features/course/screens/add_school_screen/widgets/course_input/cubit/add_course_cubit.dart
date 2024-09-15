@@ -121,6 +121,35 @@ class AddCourseCubit extends Cubit<AddCourseState> {
     return false;
   }
 
+  Future<void> addCourse() async {
+    final currentState = state;
+    if (currentState is AddCourseInitial) return;
+    emit(AddCourseLoading());
+
+    /// Generate School ID and add it
+    final courseId = addCourseRe.generateSchoolId;
+    if (schoolId.isEmpty) {
+      emit(const AddSchoolError(error: 'Failed to generate School ID'));
+      return;
+    }
+    final schoolWithId = schoolToAdd.copyWith(id: (value: schoolId, error: ''));
+    //// Convert School data to School object and validate it
+    final school = schoolWithId.toSchool;
+    if (school == null) {
+      emit(const AddSchoolError(error: 'Invalid School data'));
+      return;
+    }
+
+    // If school info is valid, upload the School info
+    try {
+      await addSchoolRepository.addSchool(school: school);
+      emit(AddSchoolSuccess(schoolId: schoolId));
+    } catch (e) {
+      emit(const AddSchoolError(error: 'Failed to add School'));
+    }
+  }
+
+
   void reset() {
     fetchCoachesAndStudents();
   }
