@@ -13,6 +13,7 @@ abstract class Collections {
   static const coaches = 'coaches';
   static const students = 'students';
   static const schools = 'schools';
+  static const courses = 'courses';
 }
 
 abstract class SubCollections {

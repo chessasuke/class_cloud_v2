@@ -1,8 +1,9 @@
 import 'package:class_cloud/core/data/auth/repository/auth_repository.dart';
 import 'package:class_cloud/core/data/coaches/models/coach.dart';
 import 'package:class_cloud/core/data/coaches/repository/coaches_repository_impl.dart';
-import 'package:class_cloud/core/data/school/models/school.dart';
-import 'package:class_cloud/core/data/school/repository/schools_repository_impl.dart';
+import 'package:class_cloud/core/data/course/model/course.dart';
+import 'package:class_cloud/core/data/course/repository/course_repository_impl.dart';
+import 'package:class_cloud/core/data/schools/repository/students_repository_impl.dart';
 import 'package:class_cloud/core/data/students/models/student.dart';
 import 'package:class_cloud/core/data/students/repository/students_repository_impl.dart';
 import 'package:class_cloud/core/data/user/repository/user_repository.dart';
@@ -18,18 +19,19 @@ import 'package:class_cloud/features/coach/screens/coach_details_screen/cubit/co
 import 'package:class_cloud/features/coach/screens/coach_details_screen/data/repository/coach_details_repository_impl.dart';
 import 'package:class_cloud/features/coach/screens/coaches_screen/coaches_screen.dart';
 import 'package:class_cloud/features/coach/screens/coaches_screen/cubit/coach_list_cubit.dart';
+import 'package:class_cloud/features/course/screens/add_course_screen/add_course_screen.dart';
+import 'package:class_cloud/features/course/screens/add_course_screen/cubit/add_course_cubit.dart';
+import 'package:class_cloud/features/course/screens/add_course_screen/data/repository/add_course_repository_impl.dart';
+import 'package:class_cloud/features/course/screens/course_details_screen/course_details.dart';
+import 'package:class_cloud/features/course/screens/course_details_screen/cubit/course_details_cubit.dart';
+import 'package:class_cloud/features/course/screens/course_details_screen/data/repository/course_details_repository_impl.dart';
+import 'package:class_cloud/features/course/screens/courses_screen/courses_screen.dart';
+import 'package:class_cloud/features/course/screens/courses_screen/cubit/course_list_cubit.dart';
+import 'package:class_cloud/features/course/screens/select_school_screen/cubit/select_school_cubit.dart';
+import 'package:class_cloud/features/course/screens/select_school_screen/select_school_screen.dart';
 import 'package:class_cloud/features/feature_switcher/screens/feature_switcher_screen.dart';
 import 'package:class_cloud/features/home/home.dart';
 import 'package:class_cloud/features/logs/logs_screen.dart';
-import 'package:class_cloud/features/school/screens/add_school_screen/add_school_screen.dart';
-import 'package:class_cloud/features/school/screens/add_school_screen/cubit/add_school_cubit.dart';
-import 'package:class_cloud/features/school/screens/add_school_screen/data/repository/add_school_repository_impl.dart';
-import 'package:class_cloud/features/school/screens/add_school_screen/widgets/course_input/cubit/add_course_cubit.dart';
-import 'package:class_cloud/features/school/screens/school_details_screen/cubit/school_details_cubit.dart';
-import 'package:class_cloud/features/school/screens/school_details_screen/data/repository/school_details_repository_impl.dart';
-import 'package:class_cloud/features/school/screens/school_details_screen/school_details.dart';
-import 'package:class_cloud/features/school/screens/schools_screen/cubit/school_list_cubit.dart';
-import 'package:class_cloud/features/school/screens/schools_screen/schools_screen.dart';
 import 'package:class_cloud/features/student/screens/add_student_screen/add_student_screen.dart';
 import 'package:class_cloud/features/student/screens/add_student_screen/cubit/add_student_cubit.dart';
 import 'package:class_cloud/features/student/screens/add_student_screen/data/repository/add_student_repository_impl.dart';
@@ -160,54 +162,70 @@ List<RouteBase> getGoRouterRoutes(Ref ref) {
           ),
         ),
         GoRoute(
-            name: GoRouterNames.schools,
-            path: GoRouterPath.schools,
+            name: GoRouterNames.courses,
+            path: GoRouterPath.courses,
             builder: (context, state) => BlocProvider(
-                  create: (context) => SchoolListCubit(
-                    schoolsRepository: ref.read(schoolsRepository),
-                  )..fetchAllSchools(),
-                  child: const SchoolsScreen(),
+                  create: (context) => CourseListCubit(
+                    courseRepository: ref.read(courseRepository),
+                  )..fetchAllCourses(),
+                  child: const CoursesScreen(),
                 ),
             routes: [
               GoRoute(
-                name: GoRouterNames.schoolDetails,
-                path: GoRouterPath.schoolDetails,
+                name: GoRouterNames.courseDetails,
+                path: GoRouterPath.courseDetails,
                 builder: (context, state) {
-                  final school = (state.pathParameters)['school'] as School?;
-                  final schoolId = (state.pathParameters)['schoolId'];
-                  return BlocProvider<SchoolDetailsCubit>(
-                    create: (context) => SchoolDetailsCubit(
-                        schoolRepository: ref.read(schoolDetailsRepository))
-                      ..fetchSchool(
-                        schoolId: schoolId,
-                        school: school,
+                  final course = (state.pathParameters)['course'] as Course?;
+                  final courseId = (state.pathParameters)['courseId'];
+                  return BlocProvider<CourseDetailsCubit>(
+                    create: (context) => CourseDetailsCubit(
+                        courseRepository: ref.read(courseDetailsRepository))
+                      ..fetchCourse(
+                        courseId: courseId,
+                        course: course,
                       ),
-                    child: SchoolDetailsScreen(schoolId: schoolId ?? ''),
+                    child: const CourseDetailsScreen(),
                   );
                 },
               ),
             ]),
 
         GoRoute(
-          name: GoRouterNames.addSchool,
-          path: GoRouterPath.addSchool,
-          builder: (context, state) => MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (context) => AddSchoolCubit(
-                    addSchoolRepository: ref.read(addSchoolRepository),
-                    userRepository: ref.read(userRepository)),
-              ),
-              BlocProvider(
-                create: (context) => AddCourseCubit(
-                  coachesRepository: ref.read(coachesRepository),
-                  studentsRepository: ref.read(studentsRepository),
+            name: GoRouterNames.selectSchool,
+            path: GoRouterPath.selectSchool,
+            builder: (context, state) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => SelectSchoolCubit(
+                        schoolRepository: ref.read(schoolsRepository),
+                      )..fetchSchools(),
+                    ),
+                  ],
+                  child: const SelectSchoolScreen(),
                 ),
+            routes: [
+              GoRoute(
+                name: GoRouterNames.addCourse,
+                path: GoRouterPath.addCourse,
+                builder: (context, state) {
+                  final schoolId = (state.pathParameters)['schoolId'];
+
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => AddCourseCubit(
+                          coachesRepository: ref.read(coachesRepository),
+                          studentsRepository: ref.read(studentsRepository),
+                          addCourseRepository: ref.read(addCourseRepository),
+                          school: schoolId ?? '',
+                        ),
+                      ),
+                    ],
+                    child: const AddCourseScreen(),
+                  );
+                },
               ),
-            ],
-            child: const AddSchoolScreen(),
-          ),
-        ),
+            ]),
       ],
     ),
   ];

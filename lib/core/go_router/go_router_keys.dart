@@ -18,10 +18,12 @@ class GoRouterNames {
   static const studentDetails = 'student';
   static const addStudent = 'add-student';
 
-  // Schools
-  static const schools = 'schools';
-  static const schoolDetails = 'school';
-  static const addSchool = 'add-school';
+  // Courses
+  static const courses = 'courses';
+  static const courseDetails = 'course';
+  static const addCourse = 'add-course';
+  static const selectSchool = 'select-school';
+
 
   // Classes
   static const classes = 'classes';
@@ -48,10 +50,11 @@ class GoRouterPath {
   static const studentDetails = ':studentId';
   static const addStudent = 'add-student';
 
-  // Schools
-  static const schools = 'schools';
-  static const schoolDetails = ':schoolId';
-  static const addSchool = 'add-school';
+  // Courses
+  static const courses = 'courses';
+  static const courseDetails = ':courseId';
+  static const addCourse = 'add-course:schoolId';
+  static const selectSchool = 'select-school';
 
   // Classes
   static const classes = 'classes';

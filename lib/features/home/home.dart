@@ -35,9 +35,9 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             CtaButton(
-              text: 'Schools',
+              text: 'Courses',
               onPressed: () async {
-                context.goNamed(GoRouterNames.schools);
+                context.goNamed(GoRouterNames.courses);
               },
             ),
             const SizedBox(height: 8),
